@@ -54,3 +54,56 @@ The baseline model's performance is evaluated using the R-squared metric, which 
 | R-squared    | 0.9728244840452863  | 0.9718240324704646 |
 
 These metrics suggest that my baseline LLinear Regression model is **'good'** because it has a high R² value for both the training set and the test set. This means that not only does it explain the varianve of the dataset well but is also good a generalizing when tested with unseen data. However, being a baseline, it serves as a starting point for further model development and refinement.
+
+## Final Model Description
+
+### Feature Selection and Transformation
+For the final model, we added `protein`, `sugar`, and `n_ingredients` to the existing features (`total_fat`, `carbs`, `year`):
+
+- **Protein and Sugar**: Key nutritional components in recipes that can significantly influence calorie content. Including them helps the model capture more of the nutritional profile of a recipe.
+- **Number of Ingredients (n_ingredients)**: This feature potentially correlates with the complexity and type of recipe, impacting the calorie content.
+
+The feature transformations applied are as follows:
+- **Log Transformation for `sugar`**: Applied to normalize the distribution, as sugar content can be skewed in recipe data.
+- **Min-Max Scaling for `protein`**: To normalize this feature, ensuring it's on the same scale as other variables.
+- **Standard Scaling for `total_fat` and `carbs`**: To standardize these features for better model performance.
+- **One-Hot Encoding for `year`**: To capture any categorical effects of the year on the recipes.
+
+### Modeling Algorithm and Hyperparameters
+#### Lasso Regression
+- **Strengths**: Lasso Regression is particularly effective in scenarios where feature selection is crucial. It adds a penalty equivalent to the absolute value of the magnitude of coefficients, which helps in reducing overfitting and in handling multicollinearity by shrinking less important feature coefficients to zero.
+- **Application**: In our context, Lasso helps identify which features (out of `total_fat`, `carbs`, `protein`, `sugar`, `year`, and `n_ingredients`) are most predictive of calorie content, potentially simplifying the model by excluding less important predictors.
+
+#### RandomForestRegressor
+- **Strengths**: This is an ensemble learning method based on decision tree regressors. It's known for its high accuracy, ability to run efficiently on large datasets, and capability to handle thousands of input variables without variable deletion. It's particularly good at capturing non-linear relationships and interactions between features.
+- **Application**: Given the diverse range of ingredients and cooking methods that can influence the calorie content of a recipe, RandomForestRegressor's ability to handle complex, non-linear relationships makes it well-suited for our prediction task.
+
+### Hyperparameter Tuning
+For the RandomForestRegressor, we performed hyperparameter tuning using GridSearchCV. We experimented with different values for `n_estimators` (the number of trees in the forest) and `max_depth` (the maximum depth of the trees). 
+
+- **Best Parameters**: The best-performing hyperparameters were found to be {'max_depth': 10, 'n_estimators': 50}. This configuration balances the model's complexity with its ability to generalize, avoiding both underfitting and overfitting.
+- **Method**: GridSearchCV was used for its exhaustive search over the specified parameter grid. This method is beneficial for systematically working through multiple combinations of parameter tunes, cross-validating as it goes to determine which tune gives the best performance.
+
+### Performance Comparison
+The performance metrics for both models are as follows:
+
+#### Lasso Regression
+| Metric          | Train R-Squared    | Test R-Squared    |
+| --------------- | ------------------ | ----------------- |
+| R-squared       | 0.9722494053815499 | 0.9718028743643612|
+
+#### RandomForestRegressor
+| Metric          | Train R-Squared    | Test R-Squared    |
+| --------------- | ------------------ | ----------------- |
+| R-squared       | 0.9899919142508882 | 0.9788770164864619|
+
+The RandomForestRegressor with the best parameters (`max_depth`: 10, `n_estimators`: 50) achieved a GridSearchCV best R^2 score of 0.9460395035205833.
+
+**The RandomForestRegressor is chosen as the final model** due to its superior performance in both training and testing phases. This model effectively captures the complexity of the relationships between the various features and the calorie content of the recipes. Its ability to handle non-linear relationships and interactions between features makes it well-suited for this task.
+
+The improvements in R-squared values from the baseline to the final model indicate that the additional features and chosen transformations have contributed significantly to the model's ability to predict calorie content accurately.
+
+| Model           | Metric          | Train R-Squared    | Test R-Squared    |
+|---------------- | --------------- | ------------------ | ----------------- |
+|Random Forest    | R-squared       | 0.9899919142508882 | 0.9788770164864619|
+|Linear Regression| R-squared       | 0.9728244840452863 | 0.9718240324704646|
