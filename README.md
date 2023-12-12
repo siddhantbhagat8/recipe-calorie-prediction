@@ -88,14 +88,14 @@ For the RandomForestRegressor, I performed hyperparameter tuning using GridSearc
 The performance metrics for both models are as follows:
 
 #### Lasso Regression
-| Metric          | Train R-Squared    | Test R-Squared    |
-|---------------- | ------------------ | ----------------- |
-| R-squared       | 0.9722494053815499 | 0.9718028743643612|
+| Metric          | Train R-Squared    | Test R-Squared     |
+|---------------- | ------------------ | -----------------  |
+| R-squared       | 0.9722494053815499 | 0.9718028743643612 |
 
 #### RandomForestRegressor
-| Metric          | Train R-Squared    | Test R-Squared    |
-|---------------- | ------------------ | ----------------- |
-| R-squared       | 0.9899919142508882 | 0.9788770164864619|
+| Metric          | Train R-Squared    | Test R-Squared     |
+|---------------- | ------------------ | -----------------  |
+| R-squared       | 0.9899919142508882 | 0.9788770164864619 |
 
 The RandomForestRegressor with the best parameters (`max_depth`: 10, `n_estimators`: 50) achieved a GridSearchCV best R^2 score of 0.9460395035205833.
 
