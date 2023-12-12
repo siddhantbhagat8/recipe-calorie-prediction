@@ -28,10 +28,29 @@ I am developing a regression model to predict the calorie content of a recipe. T
 Our chosen response variable is `calories`, which is a quantitative continuous variable. It's a vital component in nutritional information and of great interest in dietary planning and health-conscious cooking. Accurately predicting the calorie content of recipes can help in providing better dietary recommendations and in maintaining a balanced diet.
 
 ### Evaluation Metrics
-Given that our task is a regression problem, I will evaluate our model using metrics such as Mean Squared Error (MSE), Root Mean Squared Error (RMSE), and R-squared (R²). I have chosen R² as the primary metric for evaluating our model's performance. R² is a statistical measure that represents the proportion of the variance for the dependent variable (calories) that's explained by the independent variables in our model. A higher R² value indicates that the model explains a larger portion of the variance, which translates to better model performance.
+Given that our task is a regression problem, I will evaluate our model using metrics such as Mean Squared Error (MSE), Root Mean Squared Error (RMSE), and R-squared (R²). I have chosen **R²** as the primary metric for evaluating our model's performance. R² is a statistical measure that represents the proportion of the variance for the dependent variable (calories) that's explained by the independent variables in our model. A higher R² value indicates that the model explains a larger portion of the variance, which translates to better model performance.
 
 ### Model Selection
 For this task, my baseline model will be **Linear Regression**. For the final model, I will compare and evaluate e two models: **Lasso Regression** and **RandomForestRegressor**. Lasso Regression is suitable for models where I expect some degree of regularization and feature selection. RandomForestRegressor, being a robust and versatile model, is suitable for capturing complex non-linear relationships without requiring extensive hyperparameter tuning.
 
 ### Information Known
 At the time of prediction, I assume that features such as `total_fat`, `carbs`, `protein`, `sugar`, `year`, and `n_ingredients` are known. These are fundamental aspects of a recipe that can typically be determined or estimated during the recipe's creation. This information is essential for accurately predicting the calorie content and thus is integral to our model.
+
+## Baseline Model
+
+### Description
+In our baseline model: **Linear Regression**, I am using three predictor features: `total_fat` **(quantitative continuous)**, `carbs` **(quantitative continuous)**, and `year` **(categorical)**. `Year` is one-hot encoded to capture the potential varying impacts of different years on the calorie content, while `total_fat` and `carbs` are used as is. This model aims to establish a fundamental understanding of how these features relate to the calorie content of a recipe.
+
+### Feature Transformations
+The feature transformations in this baseline model include:
+- One-hot encoding for the `year` feature, given its categorical nature.
+- `total_fat` and `carbs` are kept in their original numeric form without transformation, maintaining their raw values for simplicity in this initial model.
+
+### Performance
+The baseline model's performance is evaluated using the R-squared metric, which indicates the proportion of the variance in the dependent variable that is predictable from the independent variables:
+
+| Metric       | Train Score         | Test Score         |
+| ------------ | ------------------- | ------------------ |
+| R-squared    | 0.9728244840452863  | 0.9718240324704646 |
+
+These metrics suggest that my baseline LLinear Regression model is **'good'** because it has a high R² value for both the training set and the test set. This means that not only does it explain the varianve of the dataset well but is also good a generalizing when tested with unseen data. However, being a baseline, it serves as a starting point for further model development and refinement.
