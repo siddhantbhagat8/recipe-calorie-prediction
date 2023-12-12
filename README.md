@@ -2,6 +2,7 @@
 
 ## Exploratory Data Analysis
 My majority exploratory data analsys can be found [here](https://siddhantbhagat8.github.io/recipe-calorie-analysis/)
+
 In addition to the EDA done on the above website 6 new columns were created in the `recipes` dataset. This columns were extracted from the `nutrition` column and are as follows:
 1. `total_fat`: total fat content of the recipe
 2. `sugar`: total sugar in the recipe
