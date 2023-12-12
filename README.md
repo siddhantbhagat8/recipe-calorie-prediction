@@ -1,6 +1,6 @@
 # recipe-calorie-prediction
 
-## Exploratory Data Analsys
+## Exploratory Data Analysis
 My majority exploratory data analsys can be found [here](https://siddhantbhagat8.github.io/recipe-calorie-analysis/)
 In addition to the EDA done on the above website 6 new columns were created in the `recipes` dataset. This columns were extracted from the `nutrition` column and are as follows:
 1. `total_fat`: total fat content of the recipe
@@ -58,7 +58,7 @@ These metrics suggest that my baseline LLinear Regression model is **'good'** be
 ## Final Model Description
 
 ### Feature Selection and Transformation
-For the final model, we added `protein`, `sugar`, and `n_ingredients` to the existing features (`total_fat`, `carbs`, `year`):
+For the final model, I added `protein`, `sugar`, and `n_ingredients` to the existing features (`total_fat`, `carbs`, `year`):
 
 - **Protein and Sugar**: Key nutritional components in recipes that can significantly influence calorie content. Including them helps the model capture more of the nutritional profile of a recipe.
 - **Number of Ingredients (n_ingredients)**: This feature potentially correlates with the complexity and type of recipe, impacting the calorie content.
@@ -79,7 +79,7 @@ The feature transformations applied are as follows:
 - **Application**: Given the diverse range of ingredients and cooking methods that can influence the calorie content of a recipe, RandomForestRegressor's ability to handle complex, non-linear relationships makes it well-suited for our prediction task.
 
 ### Hyperparameter Tuning
-For the RandomForestRegressor, we performed hyperparameter tuning using GridSearchCV. We experimented with different values for `n_estimators` (the number of trees in the forest) and `max_depth` (the maximum depth of the trees). 
+For the RandomForestRegressor, I performed hyperparameter tuning using GridSearchCV. I experimented with different values for `n_estimators` (the number of trees in the forest) and `max_depth` (the maximum depth of the trees). 
 
 - **Best Parameters**: The best-performing hyperparameters were found to be {'max_depth': 10, 'n_estimators': 50}. This configuration balances the model's complexity with its ability to generalize, avoiding both underfitting and overfitting.
 - **Method**: GridSearchCV was used for its exhaustive search over the specified parameter grid. This method is beneficial for systematically working through multiple combinations of parameter tunes, cross-validating as it goes to determine which tune gives the best performance.
@@ -107,3 +107,26 @@ The improvements in R-squared values from the baseline to the final model indica
 |---------------- | --------------- | ------------------ | ----------------- |
 |Random Forest    | R-squared       | 0.9899919142508882 | 0.9788770164864619|
 |Linear Regression| R-squared       | 0.9728244840452863 | 0.9718240324704646|
+
+## Fairness Analysis
+
+### Group Definition
+- **Group X**: Recipes submitted before 2013.
+- **Group Y**: Recipes submitted in 2013 or later.
+
+### Evaluation Metric
+- The chosen evaluation metric for this analysis is the **Root Mean Squared Error (RMSE)**. It quantifies the difference between the predicted and actual calorie values, making it suitable for assessing model accuracy across different groups.
+
+### Hypotheses
+- **Null Hypothesis**: The model predicts calorie content with equal accuracy for recipes submitted before and after 2013, indicating no bias in prediction based on the year of submission.
+- **Alternative Hypothesis**: The model's accuracy in predicting calorie content significantly differs for recipes submitted before 2013 compared to those submitted from 2013 onward, suggesting a potential bias in prediction based on the year of submission.
+
+### Test Statistic and Significance Level
+- The test statistic used is the absolute difference in RMSE between Group X and Group Y.
+- The significance level is set at 0.05.
+
+### Permutation Test and P-value
+- A permutation test was performed to evaluate the fairness of the model. The model used to make predictions in the permutation test was the same RandomForestRegressor model that I obtained in the Final Model section. It contains the same column transformations and the same pipeline The p-value obtained from this test is **0.825**.
+
+### Conclusion
+- With a p-value of 0.825, I **fail to reject** the null hypothesis. This is considerably higher than our significance level of 0.05, I do not find sufficient evidence to reject the null hypothesis. This outcome suggests that, based on our dataset and analysis, there is no strong statistical indication of bias in the model's calorie predictions with respect to the year of recipe submission. However, it's important to acknowledge that statistical tests have limitations and cannot conclusively prove the absence of bias. Further investigations, possibly with different methodologies or additional data, could provide more insights.
